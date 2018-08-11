@@ -14,6 +14,25 @@ cache:
 
 script: "mvn package"
 
+before_deploy:
+  - zip -r web *
+  - mkdir -p deploy
+  - mv demo.zip deploy/web.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: demo-deploy2 # S3 버킷
+    region: ap-northeast-1
+    skip_cleanup: true
+    acl: public_read
+    local_dir: deploy # before_deploy에서 생성한 디렉토리
+    wait-until-deployed: true
+    on:
+      repo: whdms705/demo #Github 주소
+      branch: master
+
 # CI 실행 완료시 메일로 알람
 notifications:
   email:
