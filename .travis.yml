@@ -12,9 +12,6 @@ cache:
   - .autoconf
   - $HOME/.m2
 
-before_install:
-  - chmod +x mvnw
-
 script: "mvn package"
 
 # CI 실행 완료시 메일로 알람
